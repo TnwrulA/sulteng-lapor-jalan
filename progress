@@ -1,0 +1,1079 @@
+# PROGRESS PROJECT — SULTENG LAPOR JALAN
+
+Project ini adalah website Laravel untuk UAS dengan tema Smart City, khususnya dimensi Smart Mobility. Website ini bernama Sulteng Lapor Jalan. Tujuan utama website ini adalah membantu masyarakat melaporkan jalan rusak secara digital agar laporan lebih cepat masuk, lebih jelas, dan lebih mudah dipantau oleh admin atau pihak pemerintah.
+
+Website ini menggunakan Laravel, MySQL dari XAMPP, phpMyAdmin, Blade Template, CSS atau Tailwind, dan GitHub.
+
+Project ini dibuat sebagai prototype UAS, jadi fokus utamanya bukan membuat aplikasi yang terlalu besar, tetapi membuat sistem yang berjalan dengan baik, alurnya jelas, tampilannya rapi, dan mudah dijelaskan saat presentasi.
+
+---
+
+## 1. Latar Belakang Project
+
+Jalan adalah fasilitas umum yang sangat penting untuk aktivitas masyarakat. Masyarakat menggunakan jalan untuk pergi ke kampus, sekolah, tempat kerja, pasar, rumah sakit, kantor pemerintahan, dan tempat umum lainnya.
+
+Namun, di beberapa wilayah Sulawesi Tengah masih terdapat jalan rusak seperti jalan berlubang, retak, bergelombang, atau amblas. Kondisi ini bisa mengganggu aktivitas masyarakat karena perjalanan menjadi lebih lambat, kendaraan bisa rusak, pengendara merasa tidak nyaman, dan risiko kecelakaan meningkat.
+
+Masalah lainnya adalah pelaporan jalan rusak belum sepenuhnya cepat dan terarah. Kadang masyarakat melihat jalan rusak, tetapi tidak tahu harus melapor ke mana. Ada juga masyarakat yang sudah melapor, tetapi tidak mengetahui apakah laporannya sudah diterima, sedang diproses, atau sudah selesai ditindaklanjuti.
+
+Karena itu, dibuatlah website Sulteng Lapor Jalan sebagai solusi pelaporan jalan rusak berbasis digital.
+
+---
+
+## 2. Kaitan dengan Smart City
+
+Project ini masuk ke dimensi Smart Mobility.
+
+Smart Mobility adalah bagian dari Smart City yang berkaitan dengan kelancaran pergerakan masyarakat, keselamatan pengguna jalan, kenyamanan transportasi, dan kemudahan akses dari satu tempat ke tempat lain.
+
+Jalan rusak dapat menghambat mobilitas masyarakat. Jika jalan rusak, kendaraan harus melambat, pengendara harus menghindari lubang, perjalanan menjadi tidak nyaman, dan risiko kecelakaan bisa meningkat.
+
+Jadi, sistem pelaporan jalan rusak ini termasuk Smart Mobility karena membantu masyarakat dan pemerintah dalam menangani masalah jalan rusak secara lebih cepat, rapi, dan terarah.
+
+---
+
+## 3. Tujuan Project
+
+Tujuan utama project ini adalah membuat website prototype pelaporan jalan rusak yang mudah digunakan oleh masyarakat dan mudah dikelola oleh admin.
+
+Tujuan khusus project:
+
+1. Membantu masyarakat melaporkan jalan rusak secara online.
+2. Membantu admin mengetahui titik jalan rusak berdasarkan laporan masyarakat.
+3. Membuat laporan jalan rusak menjadi lebih rapi dan terdokumentasi.
+4. Membantu masyarakat melihat status laporan mereka.
+5. Membantu admin mengubah status laporan sesuai proses penanganan.
+6. Menunjukkan penerapan Smart City pada dimensi Smart Mobility.
+7. Membuat project UAS yang fungsional, rapi, dan mudah dipresentasikan.
+
+---
+
+## 4. Teknologi yang Digunakan
+
+Project ini menggunakan:
+
+1. Laravel sebagai framework utama.
+2. MySQL dari XAMPP sebagai database.
+3. phpMyAdmin untuk mengelola database.
+4. Blade Template untuk tampilan halaman.
+5. CSS atau Tailwind untuk desain tampilan.
+6. GitHub untuk menyimpan dan membagikan project.
+7. Upload foto untuk bukti kondisi jalan rusak.
+8. Link Google Maps untuk menunjukkan lokasi jalan rusak.
+
+---
+
+## 5. Database
+
+Database menggunakan MySQL dari XAMPP.
+
+Nama database:
+
+sulteng_lapor_jalan
+
+Konfigurasi di file .env:
+
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=sulteng_lapor_jalan
+DB_USERNAME=root
+DB_PASSWORD=
+
+Catatan penting:
+
+1. Jangan upload file .env ke GitHub.
+2. File .env hanya digunakan di laptop masing-masing.
+3. Jika teman clone project dari GitHub, copy file .env.example menjadi .env.
+4. Setelah itu sesuaikan nama database dengan sulteng_lapor_jalan.
+5. Pastikan Apache dan MySQL di XAMPP aktif sebelum menjalankan project.
+
+---
+
+## 6. Tabel Database yang Dibutuhkan
+
+Minimal tabel utama yang dibutuhkan:
+
+1. users
+2. road_reports
+
+Tabel bawaan Laravel seperti migrations, password_reset_tokens, sessions, cache, dan jobs tidak perlu dihapus sembarangan.
+
+---
+
+## 7. Struktur Tabel Users
+
+Tabel users digunakan untuk menyimpan data akun masyarakat dan admin.
+
+Field yang dibutuhkan:
+
+id
+name
+email
+email_verified_at
+password
+role
+remember_token
+created_at
+updated_at
+
+Penjelasan:
+
+id adalah ID unik setiap user.
+
+name adalah nama pengguna.
+
+email adalah email untuk login.
+
+email_verified_at adalah field bawaan Laravel untuk verifikasi email. Untuk project UAS ini boleh tidak digunakan.
+
+password adalah password user yang sudah di-hash oleh Laravel.
+
+role digunakan untuk membedakan user biasa dan admin.
+
+Role yang digunakan:
+
+user
+admin
+
+remember_token adalah field bawaan Laravel untuk fitur remember me.
+
+created_at dan updated_at digunakan untuk menyimpan waktu data dibuat dan diubah.
+
+---
+
+## 8. Struktur Tabel Road Reports
+
+Tabel road_reports digunakan untuk menyimpan laporan jalan rusak dari masyarakat.
+
+Field yang dibutuhkan:
+
+id
+user_id
+title
+location
+region
+maps_link
+damage_type
+damage_level
+photo
+description
+status
+admin_note
+created_at
+updated_at
+
+Penjelasan:
+
+id adalah ID unik setiap laporan.
+
+user_id adalah ID user yang membuat laporan.
+
+title adalah judul laporan. Contoh: Jalan Berlubang di Area Kampus.
+
+location adalah alamat atau lokasi jalan rusak. Contoh: Jl. Soekarno Hatta, Kota Palu.
+
+region adalah wilayah kabupaten atau kota. Contoh: Kota Palu, Kabupaten Sigi, Kabupaten Donggala, Kabupaten Parigi Moutong.
+
+maps_link adalah link Google Maps atau koordinat lokasi jalan rusak.
+
+damage_type adalah jenis kerusakan jalan.
+
+Pilihan damage_type:
+
+Jalan berlubang
+Jalan retak
+Jalan bergelombang
+Jalan amblas
+Lainnya
+
+damage_level adalah tingkat kerusakan.
+
+Pilihan damage_level:
+
+Ringan
+Sedang
+Berat
+
+photo adalah foto bukti kondisi jalan rusak.
+
+description adalah keterangan tambahan dari user.
+
+status adalah status laporan.
+
+Pilihan status:
+
+Diterima
+Diverifikasi
+Diproses
+Selesai
+Ditolak
+
+Penjelasan status:
+
+Diterima artinya laporan baru masuk ke sistem.
+Diverifikasi artinya laporan sedang dicek oleh admin.
+Diproses artinya laporan sudah masuk tahap penanganan.
+Selesai artinya laporan sudah selesai ditindaklanjuti.
+Ditolak artinya laporan tidak valid atau kurang jelas.
+
+admin_note adalah catatan dari admin. Contoh: Laporan sudah diterima dan akan dicek oleh petugas.
+
+created_at dan updated_at digunakan untuk menyimpan waktu laporan dibuat dan diubah.
+
+---
+
+## 9. Relasi Database
+
+Relasi database yang digunakan:
+
+Satu user bisa membuat banyak laporan.
+Satu laporan hanya dimiliki oleh satu user.
+
+Relasi:
+
+User hasMany RoadReport
+RoadReport belongsTo User
+
+Relasi di model User.php:
+
+public function roadReports()
+{
+    return $this->hasMany(RoadReport::class);
+}
+
+Relasi di model RoadReport.php:
+
+public function user()
+{
+    return $this->belongsTo(User::class);
+}
+
+---
+
+## 10. Role Pengguna
+
+Website ini memiliki 2 role utama:
+
+1. User atau masyarakat.
+2. Admin atau pemerintah.
+
+---
+
+## 11. Fitur User
+
+User adalah masyarakat yang menggunakan website untuk membuat laporan jalan rusak.
+
+Fitur user:
+
+1. Register.
+2. Login.
+3. Logout.
+4. Dashboard user.
+5. Membuat laporan jalan rusak.
+6. Upload foto jalan rusak.
+7. Mengisi lokasi jalan rusak.
+8. Mengisi link Google Maps.
+9. Mengisi jenis kerusakan.
+10. Mengisi tingkat kerusakan.
+11. Melihat riwayat laporan pribadi.
+12. Melihat detail laporan.
+13. Melihat status laporan.
+14. Melihat catatan admin.
+
+---
+
+## 12. Detail Halaman User
+
+### Dashboard User
+
+Dashboard user menampilkan ringkasan laporan milik user yang sedang login.
+
+Isi dashboard user:
+
+1. Sapaan nama user.
+2. Total laporan yang pernah dibuat.
+3. Total laporan diterima.
+4. Total laporan diverifikasi.
+5. Total laporan diproses.
+6. Total laporan selesai.
+7. Tombol buat laporan baru.
+8. Tabel laporan terbaru.
+
+Contoh teks:
+
+Halo, Tanwirul!
+Berikut ringkasan laporan jalan rusak yang sudah kamu kirim.
+
+### Form Tambah Laporan
+
+Form tambah laporan berisi:
+
+1. Judul laporan.
+2. Lokasi jalan rusak.
+3. Kabupaten atau kota.
+4. Link Google Maps.
+5. Jenis kerusakan.
+6. Tingkat kerusakan.
+7. Upload foto.
+8. Keterangan tambahan.
+9. Tombol kirim laporan.
+
+Validasi form:
+
+1. Judul wajib diisi.
+2. Lokasi wajib diisi.
+3. Region wajib dipilih.
+4. Jenis kerusakan wajib dipilih.
+5. Tingkat kerusakan wajib dipilih.
+6. Foto wajib diupload.
+7. Foto harus format jpg, jpeg, atau png.
+8. Ukuran foto maksimal 2MB.
+9. Keterangan boleh kosong, tetapi lebih baik diisi.
+
+Status default laporan saat dibuat:
+
+Diterima
+
+### Riwayat Laporan User
+
+Halaman riwayat laporan menampilkan semua laporan yang dibuat oleh user login.
+
+Kolom tabel:
+
+1. Nomor.
+2. Judul laporan.
+3. Lokasi.
+4. Kabupaten atau kota.
+5. Jenis kerusakan.
+6. Tingkat kerusakan.
+7. Status.
+8. Tanggal laporan.
+9. Aksi atau detail.
+
+Catatan:
+
+User hanya boleh melihat laporan miliknya sendiri.
+User tidak boleh melihat laporan milik user lain.
+
+### Detail Laporan User
+
+Halaman detail laporan user menampilkan:
+
+1. Foto jalan rusak.
+2. Judul laporan.
+3. Lokasi.
+4. Kabupaten atau kota.
+5. Link Google Maps.
+6. Jenis kerusakan.
+7. Tingkat kerusakan.
+8. Keterangan.
+9. Status laporan.
+10. Catatan admin.
+11. Tanggal dibuat.
+12. Tanggal terakhir diperbarui.
+
+Catatan:
+
+User tidak boleh mengubah status laporan.
+Status hanya bisa diubah oleh admin.
+
+---
+
+## 13. Fitur Admin
+
+Admin adalah pihak yang mengelola semua laporan jalan rusak.
+
+Fitur admin:
+
+1. Login.
+2. Logout.
+3. Dashboard admin.
+4. Melihat semua laporan.
+5. Melihat detail laporan.
+6. Mengubah status laporan.
+7. Memberikan catatan admin.
+8. Menghapus laporan jika diperlukan.
+9. Melihat statistik laporan.
+
+Catatan:
+
+Admin tidak dibuat dari register biasa.
+Admin dibuat melalui seeder.
+
+---
+
+## 14. Detail Halaman Admin
+
+### Dashboard Admin
+
+Dashboard admin menampilkan ringkasan semua laporan.
+
+Isi dashboard admin:
+
+1. Total semua laporan.
+2. Total laporan diterima.
+3. Total laporan diverifikasi.
+4. Total laporan diproses.
+5. Total laporan selesai.
+6. Total laporan ditolak.
+7. Total laporan tingkat berat.
+8. Laporan terbaru.
+
+Dashboard admin harus terlihat rapi karena bagian ini penting untuk demo UAS.
+
+### Kelola Semua Laporan
+
+Halaman ini menampilkan semua laporan dari semua user.
+
+Kolom tabel:
+
+1. Nomor.
+2. Nama pelapor.
+3. Judul laporan.
+4. Lokasi.
+5. Kabupaten atau kota.
+6. Jenis kerusakan.
+7. Tingkat kerusakan.
+8. Status.
+9. Tanggal laporan.
+10. Aksi.
+
+Aksi:
+
+1. Detail.
+2. Hapus.
+
+Fitur tambahan jika sempat:
+
+1. Filter berdasarkan status.
+2. Filter berdasarkan jenis kerusakan.
+3. Filter berdasarkan tingkat kerusakan.
+4. Filter berdasarkan region.
+5. Search lokasi atau judul.
+
+### Detail Laporan Admin
+
+Halaman detail laporan admin menampilkan:
+
+1. Nama pelapor.
+2. Email pelapor.
+3. Foto jalan rusak.
+4. Judul laporan.
+5. Lokasi.
+6. Kabupaten atau kota.
+7. Link Google Maps.
+8. Jenis kerusakan.
+9. Tingkat kerusakan.
+10. Keterangan laporan.
+11. Status laporan.
+12. Catatan admin.
+13. Tanggal laporan.
+
+Di halaman ini admin bisa:
+
+1. Mengubah status laporan.
+2. Memberikan catatan admin.
+3. Menyimpan perubahan.
+
+### Update Status Laporan
+
+Admin bisa mengubah status laporan menjadi:
+
+Diterima
+Diverifikasi
+Diproses
+Selesai
+Ditolak
+
+Contoh catatan admin:
+
+Laporan sudah diterima dan akan dicek oleh petugas.
+
+Laporan masuk daftar prioritas karena tingkat kerusakan berat.
+
+Laporan ditolak karena lokasi tidak jelas atau foto tidak sesuai.
+
+---
+
+## 15. Middleware dan Keamanan Akses
+
+Project harus memiliki pembatasan akses berdasarkan role.
+
+Aturan akses:
+
+1. Guest hanya bisa membuka landing page, login, dan register.
+2. User hanya bisa membuka halaman user.
+3. Admin hanya bisa membuka halaman admin.
+4. User tidak boleh membuka dashboard admin.
+5. Admin boleh membuka halaman admin.
+6. User hanya boleh melihat laporan miliknya sendiri.
+
+Middleware role harus dibuat dengan hati-hati.
+
+Contoh konsep middleware:
+
+role:admin
+role:user
+
+Jika user biasa mencoba akses halaman admin, arahkan ke dashboard user atau tampilkan 403.
+
+---
+
+## 16. Route yang Dibutuhkan
+
+Route minimal yang dibutuhkan:
+
+Public:
+
+GET /
+GET /login
+GET /register
+
+User:
+
+GET /dashboard
+GET /reports
+GET /reports/create
+POST /reports
+GET /reports/{id}
+
+Admin:
+
+GET /admin/dashboard
+GET /admin/reports
+GET /admin/reports/{id}
+PUT /admin/reports/{id}/status
+DELETE /admin/reports/{id}
+
+Nama route boleh menyesuaikan. Yang penting alur sistem jelas.
+
+---
+
+## 17. Controller yang Disarankan
+
+Controller yang disarankan:
+
+DashboardController
+RoadReportController
+AdminReportController
+
+DashboardController mengatur dashboard user dan admin.
+
+Fungsi yang mungkin dibutuhkan:
+
+userDashboard()
+adminDashboard()
+
+RoadReportController mengatur laporan dari sisi user.
+
+Fungsi yang mungkin dibutuhkan:
+
+index()
+create()
+store()
+show()
+
+AdminReportController mengatur laporan dari sisi admin.
+
+Fungsi yang mungkin dibutuhkan:
+
+index()
+show()
+updateStatus()
+destroy()
+
+---
+
+## 18. View Blade yang Dibutuhkan
+
+View yang disarankan:
+
+resources/views/welcome.blade.php
+resources/views/dashboard.blade.php
+resources/views/reports/index.blade.php
+resources/views/reports/create.blade.php
+resources/views/reports/show.blade.php
+resources/views/admin/dashboard.blade.php
+resources/views/admin/reports/index.blade.php
+resources/views/admin/reports/show.blade.php
+
+Jika menggunakan Laravel Breeze, sesuaikan dengan struktur view Breeze.
+
+---
+
+## 19. UI dan UX Website
+
+Tampilan website harus sederhana, rapi, dan cocok untuk presentasi UAS.
+
+Warna yang disarankan:
+
+Biru tua
+Putih
+Hijau
+Abu-abu muda
+
+Konsep desain:
+
+1. Modern.
+2. Bersih.
+3. Tidak terlalu ramai.
+4. Mudah dipahami.
+5. Font mudah dibaca.
+6. Tombol jelas.
+7. Tabel rapi.
+8. Card statistik rapi.
+
+Badge status:
+
+Diterima = Biru
+Diverifikasi = Kuning
+Diproses = Ungu
+Selesai = Hijau
+Ditolak = Merah
+
+Landing page sebaiknya berisi:
+
+1. Nama website: Sulteng Lapor Jalan.
+2. Judul: Solusi Digital Pelaporan Jalan Rusak di Sulawesi Tengah.
+3. Deskripsi singkat.
+4. Tombol login.
+5. Tombol register.
+6. Tombol laporkan jalan rusak.
+7. Penjelasan manfaat.
+8. Alur pelaporan.
+
+Contoh teks landing page:
+
+Sulteng Lapor Jalan membantu masyarakat melaporkan jalan rusak secara cepat, mudah, dan terarah. Laporan yang dikirim akan membantu admin mengetahui titik kerusakan jalan dan memantau status penanganannya.
+
+---
+
+## 20. Upload Foto
+
+Foto laporan jalan rusak harus disimpan menggunakan storage Laravel.
+
+Perintah yang dibutuhkan:
+
+php artisan storage:link
+
+Folder penyimpanan yang disarankan:
+
+storage/app/public/reports
+
+Path yang disimpan di database:
+
+reports/nama_file.jpg
+
+Foto ditampilkan melalui:
+
+asset('storage/' . $report->photo)
+
+Validasi upload:
+
+required
+image
+mimes:jpg,jpeg,png
+max:2048
+
+---
+
+## 21. Alur Sistem
+
+Alur sistem website:
+
+1. Masyarakat membuka website.
+2. Masyarakat register akun.
+3. Masyarakat login.
+4. Masyarakat masuk ke dashboard user.
+5. Masyarakat klik tombol buat laporan.
+6. Masyarakat mengisi form laporan.
+7. Masyarakat upload foto jalan rusak.
+8. Masyarakat mengirim laporan.
+9. Status awal laporan menjadi Diterima.
+10. Laporan masuk ke dashboard admin.
+11. Admin melihat detail laporan.
+12. Admin memverifikasi laporan.
+13. Admin mengubah status laporan.
+14. Admin memberi catatan.
+15. User melihat perkembangan status laporan.
+
+---
+
+## 22. Urutan Pengerjaan yang Disarankan
+
+Kerjakan project secara bertahap.
+
+Tahap 1: Cek setup project
+
+1. Cek Laravel sudah berjalan.
+2. Cek XAMPP aktif.
+3. Cek database tersedia.
+4. Cek file .env.
+
+Tahap 2: Authentication
+
+1. Install Laravel Breeze jika belum ada.
+2. Pastikan login register berjalan.
+3. Pastikan dashboard awal berjalan.
+
+Tahap 3: Role
+
+1. Tambahkan kolom role ke tabel users.
+2. Buat seeder admin.
+3. Buat middleware role.
+4. Atur redirect berdasarkan role.
+
+Tahap 4: Laporan user
+
+1. Buat model RoadReport.
+2. Buat migration road_reports.
+3. Buat form laporan.
+4. Buat validasi.
+5. Buat upload foto.
+6. Buat riwayat laporan.
+7. Buat detail laporan.
+
+Tahap 5: Admin
+
+1. Buat dashboard admin.
+2. Buat tabel semua laporan.
+3. Buat detail laporan.
+4. Buat update status.
+5. Buat catatan admin.
+6. Buat hapus laporan jika diperlukan.
+
+Tahap 6: Tampilan
+
+1. Rapikan layout.
+2. Rapikan navbar.
+3. Rapikan dashboard.
+4. Rapikan form.
+5. Rapikan tabel.
+6. Tambahkan badge status.
+
+Tahap 7: Testing
+
+1. Test semua fitur.
+2. Perbaiki error.
+3. Pastikan project siap demo.
+
+Tahap 8: GitHub
+
+1. Commit perubahan.
+2. Push ke GitHub.
+
+---
+
+## 23. Perintah Terminal yang Sering Dipakai
+
+Menjalankan Laravel:
+
+php artisan serve
+
+Menjalankan migration:
+
+php artisan migrate
+
+Membuat model dan migration:
+
+php artisan make:model RoadReport -m
+
+Membuat controller:
+
+php artisan make:controller RoadReportController
+
+Membuat storage link:
+
+php artisan storage:link
+
+Membersihkan config cache:
+
+php artisan config:clear
+php artisan cache:clear
+
+Menjalankan npm dev:
+
+npm run dev
+
+Build asset:
+
+npm run build
+
+Git add commit push:
+
+git add .
+git commit -m "Update fitur project"
+git push
+
+---
+
+## 24. Hal yang Harus Dihindari
+
+Agent atau teman yang melanjutkan project jangan melakukan hal berikut tanpa izin:
+
+1. Jangan menghapus file .env.
+2. Jangan upload .env ke GitHub.
+3. Jangan menghapus folder app, routes, resources, database, atau public.
+4. Jangan menjalankan php artisan migrate:fresh tanpa izin karena bisa menghapus data.
+5. Jangan mengubah nama database tanpa izin.
+6. Jangan mengganti framework.
+7. Jangan membuat fitur terlalu kompleks sebelum fitur utama selesai.
+8. Jangan menghapus login register yang sudah berjalan.
+9. Jangan membuat admin bisa register bebas tanpa kontrol.
+10. Jangan mengubah route besar-besaran tanpa menjelaskan rencana.
+
+---
+
+## 25. Testing Wajib
+
+Testing user:
+
+1. User bisa register.
+2. User bisa login.
+3. User bisa logout.
+4. User bisa membuka dashboard.
+5. User bisa membuat laporan.
+6. User bisa upload foto.
+7. User bisa melihat riwayat laporan.
+8. User bisa melihat detail laporan.
+9. User bisa melihat status laporan.
+10. User tidak bisa membuka halaman admin.
+
+Testing admin:
+
+1. Admin bisa login.
+2. Admin bisa membuka dashboard admin.
+3. Admin bisa melihat semua laporan.
+4. Admin bisa melihat detail laporan.
+5. Admin bisa mengubah status laporan.
+6. Admin bisa memberi catatan.
+7. Admin bisa menghapus laporan jika diperlukan.
+8. Admin bisa logout.
+
+Testing database:
+
+1. Data user tersimpan.
+2. Data laporan tersimpan.
+3. Foto tersimpan.
+4. Status laporan berubah saat diupdate admin.
+5. Catatan admin tersimpan.
+
+Testing tampilan:
+
+1. Tampilan tidak berantakan.
+2. Tombol bisa diklik.
+3. Tabel mudah dibaca.
+4. Badge status muncul.
+5. Foto laporan tampil.
+
+---
+
+## 26. Akun Admin yang Disarankan
+
+Admin dibuat melalui seeder.
+
+Data admin yang disarankan:
+
+Name: Admin Sulteng Lapor Jalan
+Email: admin@gmail.com
+Password: admin123
+Role: admin
+
+Catatan:
+
+Password harus di-hash menggunakan Laravel Hash.
+Seeder harus dibuat agar teman yang clone repo bisa membuat akun admin dengan mudah.
+
+---
+
+## 27. Catatan GitHub
+
+File yang boleh diupload:
+
+app
+bootstrap
+config
+database
+public
+resources
+routes
+composer.json
+composer.lock
+package.json
+package-lock.json
+README.md
+progress
+
+File yang tidak boleh diupload:
+
+.env
+vendor
+node_modules
+
+Pastikan .gitignore berisi:
+
+.env
+/vendor
+/node_modules
+
+Jika ada perubahan, gunakan:
+
+git add .
+git commit -m "Update project"
+git push
+
+Jika teman clone project dari GitHub, langkah menjalankan project:
+
+composer install
+npm install
+copy .env.example .env
+php artisan key:generate
+php artisan migrate
+php artisan db:seed
+php artisan storage:link
+npm run build
+php artisan serve
+
+---
+
+## 28. Catatan untuk Teman yang Clone Repo
+
+Jika teman ingin menjalankan project ini di laptop lain:
+
+1. Clone repository.
+2. Masuk ke folder project.
+3. Jalankan composer install.
+4. Jalankan npm install.
+5. Copy .env.example menjadi .env.
+6. Buat database sulteng_lapor_jalan di phpMyAdmin.
+7. Atur .env.
+8. Jalankan php artisan key:generate.
+9. Jalankan php artisan migrate.
+10. Jalankan php artisan db:seed.
+11. Jalankan php artisan storage:link.
+12. Jalankan npm run build.
+13. Jalankan php artisan serve.
+14. Buka http://127.0.0.1:8000.
+
+---
+
+## 29. Jawaban Presentasi Jika Dosen Bertanya
+
+Kenapa memilih masalah jalan rusak?
+
+Karena jalan rusak adalah masalah yang dekat dengan kehidupan masyarakat. Hampir setiap hari masyarakat menggunakan jalan untuk kuliah, kerja, pasar, rumah sakit, dan aktivitas lainnya. Jika jalan rusak, perjalanan menjadi tidak nyaman, lebih lambat, dan bisa meningkatkan risiko kecelakaan.
+
+Kenapa masuk Smart Mobility?
+
+Karena Smart Mobility berhubungan dengan kelancaran pergerakan masyarakat. Jalan adalah bagian utama dari mobilitas. Kalau jalan rusak, mobilitas masyarakat terganggu. Jadi sistem pelaporan jalan rusak ini termasuk Smart Mobility karena membantu menciptakan perjalanan yang lebih aman dan nyaman.
+
+Kenapa menggunakan Laravel?
+
+Kami menggunakan Laravel karena Laravel cocok untuk membuat website berbasis database. Laravel memiliki struktur yang rapi, mendukung fitur login, routing, controller, model, migration, dan upload file. Jadi untuk project UAS, Laravel memudahkan kami membuat sistem yang lebih terstruktur.
+
+Kenapa menggunakan MySQL XAMPP?
+
+Kami menggunakan MySQL dari XAMPP karena mudah dijalankan di laptop. XAMPP sudah menyediakan MySQL dan phpMyAdmin, sehingga database bisa dibuat dan dicek dengan mudah. Untuk prototype UAS, MySQL sudah cukup untuk menyimpan data user, laporan, foto, lokasi, dan status.
+
+Apa manfaat sistem ini?
+
+Manfaatnya adalah masyarakat bisa lebih mudah melaporkan jalan rusak, admin bisa lebih cepat mengetahui titik jalan rusak, laporan menjadi lebih rapi, status laporan bisa dipantau, dan perbaikan jalan bisa lebih terarah berdasarkan data laporan.
+
+---
+
+## 30. Aturan Penting untuk Agent
+
+Agent wajib membaca bagian ini sebelum melakukan perubahan.
+
+Sebelum agent membuat, mengubah, atau menghapus file, agent wajib menjelaskan rencana terlebih dahulu.
+
+Agent tidak boleh langsung mengeksekusi kode.
+
+Format rencana agent:
+
+Saya akan melakukan perubahan berikut:
+
+1. File yang akan dibuat:
+   - ...
+
+2. File yang akan diubah:
+   - ...
+
+3. Tujuan perubahan:
+   - ...
+
+4. Perintah terminal yang perlu dijalankan:
+   - ...
+
+5. Dampak terhadap website:
+   - ...
+
+6. Risiko error yang mungkin terjadi:
+   - ...
+
+Apakah saya boleh mengeksekusi perubahan kode ini sekarang?
+
+Agent hanya boleh lanjut jika pemilik project sudah menjawab setuju.
+
+---
+
+## 31. Prompt Utama untuk Agent
+
+Saya sedang membuat project Laravel untuk UAS dengan nama Sulteng Lapor Jalan. Project ini adalah website prototype pelaporan jalan rusak di Sulawesi Tengah untuk mendukung konsep Smart City, khususnya dimensi Smart Mobility.
+
+Project ini menggunakan Laravel, MySQL dari XAMPP, phpMyAdmin, Blade Template, dan GitHub.
+
+Tolong bantu lanjutkan project ini secara bertahap. Jangan langsung mengeksekusi kode. Sebelum mengubah kode, jelaskan dulu file apa yang akan dibuat atau diubah, tujuan perubahan, perintah terminal yang dibutuhkan, dampaknya ke website, dan risiko error yang mungkin terjadi.
+
+Setelah itu tanyakan dulu kepada saya:
+
+Apakah saya boleh mengeksekusi perubahan kode ini sekarang?
+
+Fitur utama yang harus dibuat adalah:
+
+1. Login dan register.
+2. Role user dan admin.
+3. Seeder admin.
+4. Middleware role.
+5. Form laporan jalan rusak.
+6. Upload foto.
+7. Riwayat laporan user.
+8. Detail laporan user.
+9. Dashboard admin.
+10. Kelola semua laporan.
+11. Detail laporan admin.
+12. Update status laporan.
+13. Catatan admin.
+14. Dashboard statistik.
+15. Tampilan rapi untuk presentasi UAS.
+
+Project ini untuk UAS, jadi jangan membuat fitur terlalu kompleks. Fokus pada fitur yang bisa berjalan, tampilan rapi, dan alur sistem yang mudah dijelaskan saat presentasi.
+
+Sebelum mulai, baca seluruh file progress ini agar memahami tujuan project, struktur database, fitur, aturan agent, dan urutan pengerjaan.
+
+---
+
+## 32. Checklist Akhir Project
+
+Project dianggap selesai jika:
+
+- Laravel berjalan tanpa error.
+- Database MySQL terkoneksi.
+- Login register berjalan.
+- Role user dan admin berjalan.
+- Admin seeder tersedia.
+- User bisa membuat laporan.
+- User bisa upload foto.
+- User bisa melihat riwayat laporan.
+- User bisa melihat detail laporan.
+- Admin bisa melihat semua laporan.
+- Admin bisa melihat detail laporan.
+- Admin bisa update status laporan.
+- Admin bisa memberi catatan.
+- Status laporan tampil ke user.
+- Dashboard user rapi.
+- Dashboard admin rapi.
+- Tampilan siap dipresentasikan.
+- Project sudah di-push ke GitHub.
+- README atau progress sudah menjelaskan cara menjalankan project.
