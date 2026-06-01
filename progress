@@ -1077,3 +1077,305 @@ Project dianggap selesai jika:
 - Tampilan siap dipresentasikan.
 - Project sudah di-push ke GitHub.
 - README atau progress sudah menjelaskan cara menjalankan project.
+
+---
+
+## 33. Progress Pengerjaan Terbaru
+
+Tanggal update: 2026-06-01
+
+Catatan agent:
+
+1. File `progress` sudah dibaca sebelum melanjutkan pengerjaan.
+2. Tahap 1 cek setup project sudah dimulai.
+3. Laravel terdeteksi berjalan dengan versi 12.61.0.
+4. File `.env` tersedia dan database diarahkan ke `sulteng_lapor_jalan`.
+5. Status migration berhasil terbaca dari database, berarti koneksi MySQL aktif saat pengecekan.
+6. Migration `users`, `cache`, `jobs`, dan `road_reports` sudah berstatus `Ran`.
+7. Test bawaan Laravel dan Breeze sudah dijalankan, hasilnya 25 test passed.
+8. Route yang tersedia saat ini masih route bawaan landing page, dashboard, profile, dan authentication Breeze.
+9. Storage link `public/storage` belum tersedia.
+10. Tabel `road_reports` sudah ada migration-nya, tetapi struktur migration masih kosong selain `id` dan timestamps.
+11. Model `RoadReport` masih kosong dan belum memiliki fillable atau relasi ke `User`.
+12. Model `User` belum memiliki field `role` di fillable dan belum memiliki relasi `roadReports`.
+
+Status Tahap 1:
+
+- [x] Cek Laravel sudah berjalan.
+- [x] Cek file `.env`.
+- [x] Cek database dan status migration.
+- [x] Cek baseline test project.
+- [x] Cek storage link untuk fitur upload foto, hasilnya `public/storage` belum tersedia.
+
+Kesimpulan sementara:
+
+Tahap 1 sebagian besar sudah aman. Project Laravel, authentication Breeze, dan koneksi database sudah berjalan. Catatan yang perlu ditangani pada tahap berikutnya adalah role user/admin belum ada, struktur laporan jalan rusak belum lengkap, route laporan belum tersedia, dan storage link perlu dibuat sebelum fitur upload foto dipakai.
+
+Rencana lanjut:
+
+1. Masuk Tahap 2 Authentication untuk memastikan login, register, logout, dan dashboard awal sudah sesuai.
+2. Setelah Tahap 2 aman, lanjut Tahap 3 Role: tambah role user/admin, seeder admin, middleware role, dan redirect sesuai role.
+
+Update Tahap 2 Authentication:
+
+1. Route login, register, logout, password reset, profile, dan dashboard bawaan Breeze sudah tersedia.
+2. Controller register membuat user baru, login otomatis, lalu redirect ke route `dashboard`.
+3. Controller login berhasil mengautentikasi user dan redirect ke route `dashboard`.
+4. Controller logout menghapus session dan redirect ke landing page.
+5. Test authentication dan registration bawaan Breeze sudah passed.
+6. Dashboard masih tampilan default Breeze dengan teks `You're logged in!`.
+
+Status Tahap 2:
+
+- [x] Install Laravel Breeze sudah tersedia.
+- [x] Login berjalan berdasarkan test.
+- [x] Register berjalan berdasarkan test.
+- [x] Logout berjalan berdasarkan test.
+- [x] Dashboard awal tersedia.
+- [ ] Dashboard belum disesuaikan dengan kebutuhan Sulteng Lapor Jalan.
+
+Kesimpulan Tahap 2:
+
+Authentication dasar sudah aman. Tahap berikutnya yang perlu dikerjakan adalah Tahap 3 Role, karena project belum memiliki kolom `role`, admin seeder, middleware role, dan redirect user/admin.
+
+Update Tahap 3 Role:
+
+1. Pemilik project sudah memberi izin untuk langsung mengeksekusi Tahap 3 Role.
+2. File yang dicek sebelum perubahan: `bootstrap/app.php`, `database/seeders/DatabaseSeeder.php`, `routes/web.php`, `resources/views/layouts/navigation.blade.php`, `AuthenticatedSessionController.php`, dan `RegisteredUserController.php`.
+3. Kondisi awal Tahap 3: belum ada middleware role, belum ada kolom `role`, belum ada route admin dashboard, dan redirect login/register masih selalu menuju `dashboard`.
+4. Migration `add_role_to_users_table` sudah dibuat dan diisi untuk menambahkan kolom `role` default `user`.
+5. Middleware `RoleMiddleware` sudah dibuat untuk membatasi akses berdasarkan role `user` dan `admin`.
+6. Middleware alias `role` sudah didaftarkan di `bootstrap/app.php`.
+7. Model `User` sudah ditambahkan fillable `role` dan helper `isAdmin()`.
+8. `UserFactory` sudah diberi default role `user`.
+9. `DatabaseSeeder` sudah menyiapkan akun admin `admin@gmail.com` dengan password `admin123` dan role `admin`.
+10. Route `/dashboard` dibatasi untuk role `user`, dan route `/admin/dashboard` dibuat untuk role `admin`.
+11. Redirect login sudah diarahkan berdasarkan role user/admin.
+12. Register user baru sudah diset otomatis sebagai role `user`.
+13. Navigation sudah dibuat mengikuti dashboard sesuai role.
+14. View dashboard user dan dashboard admin sederhana sudah tersedia.
+15. Test role access baru sudah dibuat di `tests/Feature/RoleAccessTest.php`.
+16. Perintah `php artisan migrate` sudah dijalankan dan migration role berhasil masuk ke database.
+17. Perintah `php artisan db:seed` sudah dijalankan dan akun admin sudah disiapkan oleh seeder.
+18. Route `/admin/dashboard` sudah muncul di `php artisan route:list`.
+19. Perintah `php artisan test` sudah dijalankan, hasilnya 30 test passed dengan 70 assertions.
+20. Server Laravel lokal dijalankan di `http://127.0.0.1:8001` karena port 8000 sedang dipakai.
+21. Halaman utama pada port 8001 sudah dicek dan memberi respons HTTP 200.
+
+Status Tahap 3:
+
+- [x] Tambah kolom `role` ke tabel `users`.
+- [x] Tambah default role `user`.
+- [x] Buat akun admin melalui seeder.
+- [x] Buat middleware role.
+- [x] Daftarkan middleware alias `role`.
+- [x] Batasi dashboard user untuk role `user`.
+- [x] Buat dashboard admin untuk role `admin`.
+- [x] Redirect login berdasarkan role.
+- [x] Register user baru otomatis role `user`.
+- [x] Tambahkan test akses role.
+
+Kesimpulan Tahap 3:
+
+Role user/admin sudah berjalan. User biasa diarahkan ke dashboard user dan tidak bisa membuka dashboard admin. Admin diarahkan ke dashboard admin dan tidak masuk dashboard user. Akun admin seeder tersedia dengan email `admin@gmail.com` dan password `admin123`.
+
+Rencana lanjut:
+
+Tahap berikutnya adalah Tahap 4 Laporan user: melengkapi tabel `road_reports`, relasi model, form tambah laporan, upload foto, riwayat laporan, dan detail laporan user.
+
+Update Tahap 4 Laporan User:
+
+1. Pemilik project sudah memberi izin untuk langsung mengeksekusi Tahap 4.
+2. File awal yang dicek: `routes/web.php`, `app/Models/RoadReport.php`, `app/Models/User.php`, migration `create_road_reports_table`, folder controller, dan folder views.
+3. Kondisi awal: tabel `road_reports` sudah ada tetapi hanya berisi `id` dan timestamps.
+4. Kondisi awal: belum ada controller laporan user.
+5. Kondisi awal: belum ada route `/reports`, `/reports/create`, `/reports/{report}`.
+6. Kondisi awal: belum ada view riwayat laporan, form tambah laporan, dan detail laporan.
+7. Kondisi awal: dashboard user masih statis dan belum menampilkan statistik laporan.
+8. Migration `add_report_fields_to_road_reports_table` sudah dibuat untuk menambahkan field laporan: `user_id`, `title`, `location`, `region`, `maps_link`, `damage_type`, `damage_level`, `photo`, `description`, `status`, dan `admin_note`.
+9. Model `RoadReport` sudah ditambahkan daftar wilayah, jenis kerusakan, tingkat kerusakan, status, fillable, relasi ke `User`, dan helper badge status.
+10. Model `User` sudah ditambahkan relasi `roadReports`.
+11. `DashboardController` sudah dibuat untuk menampilkan statistik dashboard user dan laporan terbaru.
+12. `RoadReportController` sudah dibuat untuk halaman riwayat, form tambah, simpan laporan, upload foto, dan detail laporan.
+13. Route user sudah ditambahkan untuk `/reports`, `/reports/create`, `POST /reports`, dan `/reports/{report}`.
+14. Navigation sudah ditambahkan link `Laporan Saya` khusus user.
+15. Dashboard user sudah diperbarui dengan statistik dan tabel laporan terbaru.
+16. View `reports/index.blade.php`, `reports/create.blade.php`, dan `reports/show.blade.php` sudah dibuat.
+17. Test fitur laporan user sudah dibuat di `tests/Feature/RoadReportUserTest.php`.
+18. Perintah `php artisan migrate` sudah dijalankan dan migration kolom `road_reports` berhasil masuk ke database.
+19. Perintah `php artisan storage:link` sudah dijalankan dan `public/storage` berhasil terhubung ke `storage/app/public`.
+20. Route laporan user sudah muncul di `php artisan route:list`.
+21. Test pertama setelah implementasi menghasilkan 32 passed dan 1 failed karena ekstensi PHP GD belum aktif saat test membuat gambar fake.
+22. Test upload diperbaiki agar memakai file fake `image/jpeg` tanpa membutuhkan ekstensi GD.
+23. Import yang tidak dipakai di `RoadReportController` sudah dibersihkan.
+24. Test final `php artisan test` sudah dijalankan dan hasilnya 33 test passed dengan 78 assertions.
+25. File `.gitignore` sudah dicek dan `/public/storage` sudah diabaikan, sehingga storage link lokal tidak ikut commit.
+26. Server lokal `http://127.0.0.1:8001` dicek ulang dan halaman utama memberi respons HTTP 200 setelah Tahap 4.
+
+Status Tahap 4:
+
+- [x] Lengkapi field tabel `road_reports`.
+- [x] Buat relasi `User hasMany RoadReport`.
+- [x] Buat relasi `RoadReport belongsTo User`.
+- [x] Buat form laporan jalan rusak.
+- [x] Buat validasi laporan.
+- [x] Buat upload foto ke storage Laravel.
+- [x] Buat halaman riwayat laporan user.
+- [x] Buat halaman detail laporan user.
+- [x] Pastikan user hanya bisa melihat laporan miliknya sendiri.
+- [x] Tampilkan statistik laporan di dashboard user.
+- [x] Tambahkan test fitur laporan user.
+
+Kesimpulan Tahap 4:
+
+Fitur laporan user sudah berjalan. User bisa membuat laporan jalan rusak, upload foto, melihat riwayat laporan, melihat detail laporan, melihat status laporan, dan melihat catatan admin jika nanti diisi oleh admin. Akses detail laporan sudah dibatasi agar user tidak bisa membuka laporan milik user lain.
+
+Rencana lanjut:
+
+Tahap berikutnya adalah Tahap 5 Admin: dashboard admin statistik, kelola semua laporan, detail laporan admin, update status, catatan admin, dan hapus laporan jika diperlukan.
+
+Update Tahap 5 Admin:
+
+1. Pemilik project meminta lanjut ke tahap berikutnya.
+2. File awal yang dicek: `routes/web.php`, `DashboardController`, `RoadReport`, `admin/dashboard.blade.php`, folder `resources/views/admin`, dan `RoleAccessTest`.
+3. Kondisi awal: route admin hanya memiliki `/admin/dashboard`.
+4. Kondisi awal: dashboard admin masih statis dan belum menampilkan statistik laporan.
+5. Kondisi awal: belum ada controller admin untuk mengelola laporan.
+6. Kondisi awal: belum ada view daftar laporan admin dan detail laporan admin.
+7. Kondisi awal: belum ada fitur update status, catatan admin, atau hapus laporan.
+8. `AdminReportController` sudah dibuat.
+9. Folder view `resources/views/admin/reports` sudah dibuat.
+10. `DashboardController` sudah ditambahkan method admin untuk statistik semua laporan.
+11. Dashboard admin sudah diperbarui dengan statistik total laporan, status laporan, kerusakan berat, dan laporan terbaru.
+12. Route admin reports sudah ditambahkan: daftar laporan, detail laporan, update status, dan hapus laporan.
+13. Navigation admin sudah ditambahkan link `Kelola Laporan`.
+14. Halaman `admin/reports/index.blade.php` sudah dibuat dengan tabel semua laporan, search, dan filter status/tingkat/wilayah.
+15. Halaman `admin/reports/show.blade.php` sudah dibuat dengan detail laporan, data pelapor, form update status, catatan admin, dan tombol hapus.
+16. `AdminReportController` sudah menangani daftar laporan, detail, update status/catatan, dan hapus laporan beserta foto dari storage.
+17. Test admin laporan sudah dibuat di `tests/Feature/AdminReportTest.php`.
+18. Route admin reports sudah dicek melalui `php artisan route:list` dan total route menjadi 32.
+19. Test final `php artisan test` sudah dijalankan dan hasilnya 38 test passed dengan 93 assertions.
+20. Perintah `npm run build` sudah dijalankan dan asset Vite/Tailwind berhasil dibuat.
+21. Server lokal `http://127.0.0.1:8001` dicek ulang dan halaman utama memberi respons HTTP 200 setelah Tahap 5.
+
+Status Tahap 5:
+
+- [x] Buat dashboard admin statistik.
+- [x] Tampilkan laporan terbaru di dashboard admin.
+- [x] Buat halaman kelola semua laporan.
+- [x] Tambahkan search laporan berdasarkan judul atau lokasi.
+- [x] Tambahkan filter status, tingkat kerusakan, dan wilayah.
+- [x] Buat halaman detail laporan admin.
+- [x] Tampilkan data pelapor di detail admin.
+- [x] Buat update status laporan.
+- [x] Buat catatan admin.
+- [x] Buat hapus laporan dan hapus foto dari storage.
+- [x] Tambahkan test fitur admin.
+
+Kesimpulan Tahap 5:
+
+Fitur admin utama sudah berjalan. Admin bisa melihat statistik semua laporan, membuka daftar semua laporan, memakai filter/search, melihat detail laporan, mengubah status, menambahkan catatan admin, dan menghapus laporan. User biasa tetap tidak bisa membuka halaman admin.
+
+Rencana lanjut:
+
+Tahap berikutnya adalah Tahap 6 Tampilan: merapikan landing page, navbar, dashboard, form, tabel, dan badge status agar lebih siap untuk presentasi UAS.
+
+Update Tahap 6 Tampilan:
+
+1. Pemilik project meminta tampilan diperbarui dan dibuat lebih bagus.
+2. Arahan desain dari pemilik project: jangan memakai tema warna biru karena terlihat pasaran.
+3. Skill `imagegen` digunakan untuk membuat aset visual hero landing page.
+4. Aset hero dibuat dengan gaya foto editorial jalan rusak dan aktivitas pelaporan memakai smartphone.
+5. Aset hero disimpan ke `public/images/road-report-hero.png`.
+6. Arah visual Tahap 6 memakai palet non-biru: charcoal, hijau moss, off-white, amber keselamatan, dan aksen merah untuk bahaya.
+7. File awal yang dicek: `welcome.blade.php`, `resources/css/app.css`, `tailwind.config.js`, `layouts/app.blade.php`, dan `application-logo.blade.php`.
+8. Landing page default Laravel sudah diganti menjadi halaman Sulteng Lapor Jalan dengan hero foto jalan rusak.
+9. Logo aplikasi diganti dari logo Laravel menjadi ikon pin/lokasi jalan.
+10. Layout utama dan guest layout sudah diberi background non-biru dan card style baru.
+11. Komponen tombol, input, nav link, dan responsive nav link sudah diganti ke palet charcoal, moss, amber, dan off-white.
+12. Badge status laporan sudah diganti agar tidak memakai biru atau ungu.
+13. Dashboard user dan dashboard admin sudah dirapikan dengan `ui-card`, tabel header baru, dan link aksen moss.
+14. Halaman riwayat laporan, form laporan, detail laporan user, daftar laporan admin, dan detail admin sudah disesuaikan dengan tampilan baru.
+15. Halaman login/register/verifikasi email/profile sudah dilepas dari sisa fokus indigo.
+16. Scan warna `blue`, `indigo`, `cyan`, dan `sky` di `resources/views`, `resources/css`, dan `app/Models` sudah dilakukan dan tidak menemukan sisa class warna tersebut.
+17. Perintah `npm run build` sudah dijalankan dan asset Vite/Tailwind berhasil dibuat.
+18. Perintah `php artisan test` sudah dijalankan dan hasilnya 38 test passed dengan 93 assertions.
+19. Halaman landing baru `http://127.0.0.1:8001` sudah dicek dan memberi respons HTTP 200.
+20. Halaman login `http://127.0.0.1:8001/login` sudah dicek dan memberi respons HTTP 200.
+21. Server lokal tetap aktif di `http://127.0.0.1:8001`.
+22. Aset hero `public/images/road-report-hero.png` sudah dicek tersedia.
+
+Status Tahap 6:
+
+- [x] Ganti landing page default Laravel.
+- [x] Tambahkan aset visual hero.
+- [x] Ganti logo aplikasi.
+- [x] Ganti palet dari biru ke charcoal, moss, amber, off-white, dan merah status.
+- [x] Rapikan navbar.
+- [x] Rapikan dashboard user.
+- [x] Rapikan dashboard admin.
+- [x] Rapikan form laporan.
+- [x] Rapikan tabel laporan user dan admin.
+- [x] Rapikan detail laporan user dan admin.
+- [x] Rapikan login/register guest layout.
+- [x] Ganti badge status non-biru.
+- [x] Build asset dan test.
+
+Kesimpulan Tahap 6:
+
+Tampilan website sudah diperbarui dengan identitas visual yang lebih khas dan tidak memakai tema biru. Landing page sekarang memakai foto hero jalan rusak, navbar dan halaman dashboard/laporan menggunakan palet non-biru, serta form dan tabel lebih rapi untuk presentasi UAS.
+
+Rencana lanjut:
+
+Tahap berikutnya adalah Tahap 7 Testing: melakukan pengecekan alur manual end-to-end untuk user dan admin, lalu memperbaiki error tampilan atau fungsi jika ditemukan.
+
+Update Tahap 7 Testing:
+
+1. Pemilik project meminta lanjut ke tahap berikutnya.
+2. Fokus Tahap 7 adalah memastikan alur utama berjalan dari sisi user dan admin setelah fitur role, laporan, admin, dan tampilan selesai.
+3. Area yang akan dites: landing page, authentication, dashboard user, laporan user, upload foto, dashboard admin, kelola laporan admin, update status, catatan admin, dan akses role.
+4. Akan ditambahkan test end-to-end untuk memastikan laporan yang dibuat user bisa diubah status/catatannya oleh admin dan perubahan tersebut tampil kembali di detail laporan user.
+5. Test baru `tests/Feature/EndToEndReportFlowTest.php` sudah dibuat.
+6. Test tersebut mengecek identitas landing page, aset hero, pembuatan laporan oleh user, akses detail admin, update status/catatan admin, dan tampilan status/catatan terbaru di sisi user.
+7. Tanggal update Tahap 7: 2026-06-02.
+8. Perintah `php artisan migrate:status` sudah dijalankan dan semua migration berstatus `Ran`.
+9. Perintah `php artisan route:list` sudah dijalankan dan route final berjumlah 32.
+10. Perintah `npm run build` sudah dijalankan dan asset Vite/Tailwind berhasil dibuat.
+11. Perintah `php artisan test` sudah dijalankan dan hasilnya 40 test passed dengan 109 assertions.
+12. Landing page `http://127.0.0.1:8001` sudah dicek dan memberi respons HTTP 200.
+13. Halaman login `http://127.0.0.1:8001/login` sudah dicek dan memberi respons HTTP 200.
+14. Halaman register `http://127.0.0.1:8001/register` sudah dicek dan memberi respons HTTP 200.
+15. Dashboard guest dicek melalui header HTTP dan mengembalikan 302 redirect ke `http://127.0.0.1:8001/login`, sesuai aturan akses.
+
+Status Tahap 7:
+
+- [x] Test landing page.
+- [x] Test authentication.
+- [x] Test role user/admin.
+- [x] Test user membuat laporan.
+- [x] Test upload foto.
+- [x] Test user hanya melihat laporan miliknya sendiri.
+- [x] Test admin melihat semua laporan.
+- [x] Test admin melihat detail laporan.
+- [x] Test admin update status dan catatan.
+- [x] Test user melihat status/catatan terbaru dari admin.
+- [x] Test admin hapus laporan dan foto.
+- [x] Test build asset.
+- [x] Test respons halaman lokal.
+
+Kesimpulan Tahap 7:
+
+Testing utama sudah aman. Alur end-to-end dari user membuat laporan, admin memproses laporan, sampai user melihat pembaruan status dan catatan sudah lolos test. Route, migration, build asset, dan halaman lokal juga sudah dicek.
+
+Rencana lanjut:
+
+Tahap berikutnya adalah Tahap 8 GitHub: cek perubahan file, commit perubahan, dan push ke GitHub jika pemilik project sudah siap.
+
+Update Tahap 8 GitHub:
+
+1. Pemilik project meminta lanjut ke tahap berikutnya.
+2. Tanggal update Tahap 8: 2026-06-02.
+3. Fokus Tahap 8 adalah mengecek status perubahan file, memastikan remote GitHub tersedia, membuat commit, dan melakukan push jika memungkinkan.
+4. Branch aktif adalah `main`.
+5. Remote GitHub tersedia: `origin https://github.com/TnwrulA/sulteng-lapor-jalan`.
+6. Status git menunjukkan perubahan dari Tahap 3 sampai Tahap 8 belum di-commit.

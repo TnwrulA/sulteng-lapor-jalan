@@ -1,20 +1,37 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
+@php
+    $dashboardRoute = Auth::user()->isAdmin() ? 'admin.dashboard' : 'dashboard';
+@endphp
+
+<nav x-data="{ open: false }" class="border-b border-[#d7dccd] bg-[#fbfcf7]/95 backdrop-blur">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                    <a href="{{ route($dashboardRoute) }}" class="flex items-center gap-3">
+                        <span class="flex h-10 w-10 items-center justify-center rounded-md bg-[#f2b84b] text-[#171c15]">
+                            <x-application-logo class="h-6 w-6" />
+                        </span>
+                        <span class="hidden text-sm font-bold text-[#1f241f] lg:block">Sulteng Lapor Jalan</span>
                     </a>
                 </div>
 
                 <!-- Navigation Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+                    <x-nav-link :href="route($dashboardRoute)" :active="request()->routeIs('dashboard') || request()->routeIs('admin.dashboard')">
                         {{ __('Dashboard') }}
                     </x-nav-link>
+
+                    @if (! Auth::user()->isAdmin())
+                        <x-nav-link :href="route('reports.index')" :active="request()->routeIs('reports.*')">
+                            Laporan Saya
+                        </x-nav-link>
+                    @else
+                        <x-nav-link :href="route('admin.reports.index')" :active="request()->routeIs('admin.reports.*')">
+                            Kelola Laporan
+                        </x-nav-link>
+                    @endif
                 </div>
             </div>
 
@@ -22,7 +39,7 @@
             <div class="hidden sm:flex sm:items-center sm:ms-6">
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
-                        <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
+                        <button class="inline-flex items-center rounded-md border border-transparent bg-white/70 px-3 py-2 text-sm font-medium leading-4 text-[#626a5d] transition hover:text-[#1f241f] focus:outline-none">
                             <div>{{ Auth::user()->name }}</div>
 
                             <div class="ms-1">
@@ -54,7 +71,7 @@
 
             <!-- Hamburger -->
             <div class="-me-2 flex items-center sm:hidden">
-                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-100 focus:text-gray-500 transition duration-150 ease-in-out">
+                <button @click="open = ! open" class="inline-flex items-center justify-center rounded-md p-2 text-[#626a5d] transition hover:bg-[#eef1e7] hover:text-[#1f241f] focus:outline-none focus:bg-[#eef1e7] focus:text-[#1f241f]">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
                         <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
                         <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
@@ -67,16 +84,26 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
+            <x-responsive-nav-link :href="route($dashboardRoute)" :active="request()->routeIs('dashboard') || request()->routeIs('admin.dashboard')">
                 {{ __('Dashboard') }}
             </x-responsive-nav-link>
+
+            @if (! Auth::user()->isAdmin())
+                <x-responsive-nav-link :href="route('reports.index')" :active="request()->routeIs('reports.*')">
+                    Laporan Saya
+                </x-responsive-nav-link>
+            @else
+                <x-responsive-nav-link :href="route('admin.reports.index')" :active="request()->routeIs('admin.reports.*')">
+                    Kelola Laporan
+                </x-responsive-nav-link>
+            @endif
         </div>
 
         <!-- Responsive Settings Options -->
-        <div class="pt-4 pb-1 border-t border-gray-200">
+        <div class="border-t border-[#d7dccd] pb-1 pt-4">
             <div class="px-4">
-                <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
+                <div class="text-base font-semibold text-[#1f241f]">{{ Auth::user()->name }}</div>
+                <div class="text-sm font-medium text-[#626a5d]">{{ Auth::user()->email }}</div>
             </div>
 
             <div class="mt-3 space-y-1">

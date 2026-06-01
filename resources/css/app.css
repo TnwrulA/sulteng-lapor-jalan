@@ -1,3 +1,53 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+    body {
+        background: #eef1e7;
+        color: #1f241f;
+    }
+
+    ::selection {
+        background: #f2b84b;
+        color: #171c15;
+    }
+}
+
+@layer components {
+    .app-surface {
+        background: radial-gradient(circle at top left, rgba(122, 146, 93, 0.16), transparent 34%), #eef1e7;
+    }
+
+    .ui-card {
+        @apply rounded-md border border-[#d7dccd] bg-white/90 shadow-sm;
+    }
+
+    .ui-card-strong {
+        @apply rounded-md border border-[#cad2bf] bg-[#fbfcf7] shadow-sm;
+    }
+
+    .action-primary {
+        @apply inline-flex items-center justify-center rounded-md bg-[#f2b84b] px-4 py-2 text-sm font-bold text-[#171c15] transition hover:bg-[#ffd36d] focus:outline-none focus:ring-2 focus:ring-[#7f8f58] focus:ring-offset-2;
+    }
+
+    .action-dark {
+        @apply inline-flex items-center justify-center rounded-md bg-[#1f241f] px-4 py-2 text-sm font-bold text-white transition hover:bg-[#30382e] focus:outline-none focus:ring-2 focus:ring-[#f2b84b] focus:ring-offset-2;
+    }
+
+    .action-muted {
+        @apply inline-flex items-center justify-center rounded-md border border-[#cbd3bf] bg-white px-4 py-2 text-sm font-semibold text-[#30382e] transition hover:bg-[#f4f6ed] focus:outline-none focus:ring-2 focus:ring-[#7f8f58] focus:ring-offset-2;
+    }
+
+    .link-accent {
+        @apply font-medium text-[#6b7b42] transition hover:text-[#3f4b25];
+    }
+
+    .field-control {
+        @apply rounded-md border-[#cbd3bf] bg-white shadow-sm focus:border-[#7f8f58] focus:ring-[#7f8f58];
+    }
+
+    .table-head {
+        @apply bg-[#f4f6ed] text-[#5c6358];
+    }
+}
