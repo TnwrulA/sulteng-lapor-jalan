@@ -1443,3 +1443,20 @@ Verifikasi:
 Catatan:
 
 Tidak ada pilihan role saat register karena itu disengaja untuk keamanan alur prototype. Admin dibuat melalui seeder dengan akun `admin@gmail.com` dan password `admin123`.
+
+---
+
+## 35. Update Localhost
+
+Tanggal update: 2026-06-02
+
+1. Pemilik project meminta localhost dikembalikan ke port `8000`.
+2. Port `8000` dicek dan sudah menjalankan Laravel dari project `sulteng-lapor-jalan`.
+3. Server tambahan di port `8001` dihentikan.
+4. Port `8001` sudah tidak aktif.
+5. Halaman utama `http://127.0.0.1:8000` sudah dicek dan memberi respons HTTP 200.
+
+Status:
+
+- [x] Localhost kembali memakai `http://127.0.0.1:8000`.
+- [x] Server tambahan `8001` dihentikan.
