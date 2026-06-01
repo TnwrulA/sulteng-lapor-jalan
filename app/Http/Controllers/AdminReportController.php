@@ -38,6 +38,75 @@ class AdminReportController extends Controller
         ]);
     }
 
+    public function export(Request $request)
+    {
+        $reports = RoadReport::with('user')
+            ->when($request->filled('status'), fn ($query) => $query->where('status', $request->status))
+            ->when($request->filled('damage_level'), fn ($query) => $query->where('damage_level', $request->damage_level))
+            ->when($request->filled('region'), fn ($query) => $query->where('region', $request->region))
+            ->when($request->filled('search'), function ($query) use ($request) {
+                $search = $request->search;
+
+                $query->where(function ($query) use ($search) {
+                    $query->where('title', 'like', "%{$search}%")
+                        ->orWhere('location', 'like', "%{$search}%");
+                });
+            })
+            ->latest()
+            ->get();
+
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="laporan-jalan-rusak-sulteng.csv"',
+            'Pragma' => 'no-cache',
+            'Cache-Control' => 'must-revalidate, post-check=0, pre-check=0',
+            'Expires' => '0'
+        ];
+
+        $callback = function () use ($reports) {
+            $file = fopen('php://output', 'w');
+            
+            // Add UTF-8 BOM
+            fputs($file, "\xEF\xBB\xBF");
+            
+            fputcsv($file, [
+                'ID Laporan', 
+                'Tanggal Pelaporan', 
+                'Nama Pelapor', 
+                'Email Pelapor', 
+                'Judul Laporan', 
+                'Lokasi', 
+                'Kabupaten/Kota', 
+                'Link Google Maps / Koordinat', 
+                'Jenis Kerusakan', 
+                'Tingkat Kerusakan', 
+                'Status', 
+                'Catatan Admin'
+            ]);
+
+            foreach ($reports as $report) {
+                fputcsv($file, [
+                    $report->id,
+                    $report->created_at->format('d M Y H:i'),
+                    $report->user->name,
+                    $report->user->email,
+                    $report->title,
+                    $report->location,
+                    $report->region,
+                    $report->maps_link,
+                    $report->damage_type,
+                    $report->damage_level,
+                    $report->status,
+                    $report->admin_note ?: '-'
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
+    }
+
     public function show(RoadReport $report): View
     {
         return view('admin.reports.show', [

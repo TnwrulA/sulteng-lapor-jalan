@@ -77,4 +77,28 @@ class RoadReport extends Model
             default => 'border border-stone-300 bg-stone-100 text-stone-800',
         };
     }
+
+    /**
+     * Get latitude and longitude from maps_link
+     */
+    public function getCoordinates(): ?array
+    {
+        if (! $this->maps_link) {
+            return null;
+        }
+
+        // Decode HTML entities and URL encoding first (converts %2C to comma, +/space properly)
+        $link = urldecode(html_entity_decode($this->maps_link));
+
+        // Match any standard coordinates format: lat,lng (e.g. -0.8917, 119.8707)
+        if (preg_match('/(-?\d+\.\d+)\s*,\s*(-?\d+\.\d+)/', $link, $matches)) {
+            return [
+                'lat' => floatval($matches[1]),
+                'lng' => floatval($matches[2]),
+            ];
+        }
+
+        return null;
+    }
 }
+

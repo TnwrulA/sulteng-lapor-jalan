@@ -6,8 +6,18 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoadReportController;
 use Illuminate\Support\Facades\Route;
 
+use App\Models\RoadReport;
+
 Route::get('/', function () {
-    return view('welcome');
+    $allReports = RoadReport::with('user')->latest()->get();
+    
+    // Filter reports that have coordinates for Leaflet map
+    $mapReports = $allReports->filter(fn($r) => $r->getCoordinates() !== null)->values();
+    
+    // Recent reports for highlights list
+    $recentReports = $allReports->take(5);
+
+    return view('welcome', compact('mapReports', 'recentReports'));
 });
 
 Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
@@ -17,6 +27,7 @@ Route::middleware(['auth', 'verified', 'role:user'])->group(function () {
 
 Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [DashboardController::class, 'admin'])->name('dashboard');
+    Route::get('/reports/export', [AdminReportController::class, 'export'])->name('reports.export');
     Route::get('/reports', [AdminReportController::class, 'index'])->name('reports.index');
     Route::get('/reports/{report}', [AdminReportController::class, 'show'])->name('reports.show');
     Route::put('/reports/{report}/status', [AdminReportController::class, 'updateStatus'])->name('reports.update-status');

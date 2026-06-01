@@ -46,6 +46,18 @@ class DashboardController extends Controller
             'berat' => RoadReport::where('damage_level', 'Berat')->count(),
         ];
 
+        // Fetch count of reports grouped by region for Chart.js
+        $reportsByRegion = RoadReport::select('region', \Illuminate\Support\Facades\DB::raw('count(*) as total'))
+            ->groupBy('region')
+            ->get()
+            ->pluck('total', 'region')
+            ->toArray();
+
+        $regionChartData = [];
+        foreach (RoadReport::REGIONS as $region) {
+            $regionChartData[$region] = $reportsByRegion[$region] ?? 0;
+        }
+
         $recentReports = RoadReport::with('user')
             ->latest()
             ->take(5)
@@ -54,6 +66,7 @@ class DashboardController extends Controller
         return view('admin.dashboard', [
             'stats' => $stats,
             'recentReports' => $recentReports,
+            'regionChartData' => $regionChartData,
         ]);
     }
 }
