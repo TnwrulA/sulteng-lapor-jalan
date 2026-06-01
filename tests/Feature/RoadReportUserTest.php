@@ -46,9 +46,32 @@ class RoadReportUserTest extends TestCase
         $this->assertDatabaseHas('road_reports', [
             'user_id' => $user->id,
             'title' => 'Jalan Berlubang di Area Kampus',
-            'status' => 'Diterima',
+            'status' => 'Menunggu Verifikasi',
         ]);
         Storage::disk('public')->assertExists($report->photo);
+    }
+
+    public function test_maps_link_is_normalized_when_user_enters_coordinates(): void
+    {
+        Storage::fake('public');
+
+        $user = User::factory()->create(['role' => 'user']);
+
+        $this->actingAs($user)->post('/reports', [
+            'title' => 'Jalan Retak di Depan Kantor',
+            'location' => 'Jl. Sam Ratulangi, Kota Palu',
+            'region' => 'Kota Palu',
+            'maps_link' => '-0.899,119.870',
+            'damage_type' => 'Jalan retak',
+            'damage_level' => 'Sedang',
+            'photo' => UploadedFile::fake()->create('jalan-retak.jpg', 256, 'image/jpeg'),
+            'description' => 'Retakan memanjang di badan jalan.',
+        ]);
+
+        $this->assertDatabaseHas('road_reports', [
+            'user_id' => $user->id,
+            'maps_link' => 'https://www.google.com/maps/search/?api=1&query=-0.899%2C119.870',
+        ]);
     }
 
     public function test_user_can_only_view_own_report_detail(): void
@@ -64,7 +87,7 @@ class RoadReportUserTest extends TestCase
             'damage_type' => 'Jalan retak',
             'damage_level' => 'Sedang',
             'photo' => 'reports/test.jpg',
-            'status' => 'Diterima',
+            'status' => 'Menunggu Verifikasi',
         ]);
 
         $otherReport = RoadReport::create([
@@ -75,7 +98,7 @@ class RoadReportUserTest extends TestCase
             'damage_type' => 'Jalan amblas',
             'damage_level' => 'Berat',
             'photo' => 'reports/test-2.jpg',
-            'status' => 'Diterima',
+            'status' => 'Menunggu Verifikasi',
         ]);
 
         $this->actingAs($user)->get(route('reports.show', $ownReport))->assertOk();

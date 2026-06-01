@@ -14,6 +14,7 @@ class DashboardController extends Controller
 
         $stats = [
             'total' => $user->roadReports()->count(),
+            'menunggu' => $user->roadReports()->where('status', 'Menunggu Verifikasi')->count(),
             'diterima' => $user->roadReports()->where('status', 'Diterima')->count(),
             'diverifikasi' => $user->roadReports()->where('status', 'Diverifikasi')->count(),
             'diproses' => $user->roadReports()->where('status', 'Diproses')->count(),
@@ -36,6 +37,7 @@ class DashboardController extends Controller
     {
         $stats = [
             'total' => RoadReport::count(),
+            'menunggu' => RoadReport::where('status', 'Menunggu Verifikasi')->count(),
             'diterima' => RoadReport::where('status', 'Diterima')->count(),
             'diverifikasi' => RoadReport::where('status', 'Diverifikasi')->count(),
             'diproses' => RoadReport::where('status', 'Diproses')->count(),

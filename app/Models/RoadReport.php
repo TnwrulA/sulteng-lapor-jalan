@@ -38,6 +38,7 @@ class RoadReport extends Model
     ];
 
     public const STATUSES = [
+        'Menunggu Verifikasi',
         'Diterima',
         'Diverifikasi',
         'Diproses',
@@ -67,6 +68,7 @@ class RoadReport extends Model
     public function statusBadgeClass(): string
     {
         return match ($this->status) {
+            'Menunggu Verifikasi' => 'border border-stone-300 bg-stone-100 text-stone-800',
             'Diterima' => 'border border-stone-300 bg-stone-100 text-stone-800',
             'Diverifikasi' => 'border border-amber-300 bg-amber-100 text-amber-900',
             'Diproses' => 'border border-orange-300 bg-orange-100 text-orange-900',

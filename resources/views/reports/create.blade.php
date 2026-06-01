@@ -36,6 +36,7 @@
                 <div class="mt-4">
                     <x-input-label for="maps_link" value="Link Google Maps atau koordinat" />
                     <x-text-input id="maps_link" name="maps_link" type="text" class="mt-1 block w-full" :value="old('maps_link')" />
+                    <p class="mt-1 text-xs text-[#626a5d]">Boleh isi link Google Maps lengkap, link tanpa https, koordinat, atau nama lokasi.</p>
                     <x-input-error :messages="$errors->get('maps_link')" class="mt-2" />
                 </div>
 

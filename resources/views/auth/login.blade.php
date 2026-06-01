@@ -2,6 +2,13 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
+    <div class="mb-5 rounded-md border border-[#d7dccd] bg-[#f4f6ed] p-4 text-sm text-[#30382e]">
+        <p class="font-semibold">Akun admin demo</p>
+        <p class="mt-1">Email: <span class="font-mono">admin@gmail.com</span></p>
+        <p>Password: <span class="font-mono">admin123</span></p>
+        <p class="mt-2 text-xs text-[#626a5d]">Register hanya membuat akun masyarakat. Admin dibuat melalui seeder agar akses admin tidak bisa dipilih bebas.</p>
+    </div>
+
     <form method="POST" action="{{ route('login') }}">
         @csrf
 

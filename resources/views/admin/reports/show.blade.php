@@ -73,7 +73,7 @@
 
                         @if ($report->maps_link)
                             <div class="mt-6">
-                                <a href="{{ $report->maps_link }}" target="_blank" class="action-dark">
+                                <a href="{{ $report->maps_link }}" target="_blank" rel="noopener noreferrer" class="action-dark">
                                     Buka Lokasi
                                 </a>
                             </div>

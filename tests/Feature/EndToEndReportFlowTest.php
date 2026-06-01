@@ -44,7 +44,7 @@ class EndToEndReportFlowTest extends TestCase
         $report = RoadReport::firstOrFail();
 
         $storeResponse->assertRedirect(route('reports.show', $report, absolute: false));
-        $this->assertSame('Diterima', $report->status);
+        $this->assertSame('Menunggu Verifikasi', $report->status);
         Storage::disk('public')->assertExists($report->photo);
 
         $this->actingAs($admin)
@@ -54,14 +54,14 @@ class EndToEndReportFlowTest extends TestCase
             ->assertSee($user->email);
 
         $this->actingAs($admin)->put(route('admin.reports.update-status', $report), [
-            'status' => 'Diverifikasi',
-            'admin_note' => 'Laporan sudah diterima dan akan dicek oleh petugas.',
+            'status' => 'Diterima',
+            'admin_note' => 'Laporan sudah disetujui admin dan akan dicek oleh petugas.',
         ])->assertRedirect(route('admin.reports.show', $report, absolute: false));
 
         $this->actingAs($user)
             ->get(route('reports.show', $report))
             ->assertOk()
-            ->assertSee('Diverifikasi')
-            ->assertSee('Laporan sudah diterima dan akan dicek oleh petugas.');
+            ->assertSee('Diterima')
+            ->assertSee('Laporan sudah disetujui admin dan akan dicek oleh petugas.');
     }
 }

@@ -24,6 +24,7 @@
             <div class="grid gap-4 sm:grid-cols-2 lg:grid-cols-5">
                 @foreach ([
                     'Total Laporan' => $stats['total'],
+                    'Menunggu' => $stats['menunggu'],
                     'Diterima' => $stats['diterima'],
                     'Diverifikasi' => $stats['diverifikasi'],
                     'Diproses' => $stats['diproses'],

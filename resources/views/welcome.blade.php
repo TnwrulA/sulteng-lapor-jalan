@@ -14,9 +14,9 @@
     <body class="font-sans text-[#1f241f] antialiased">
         <div class="min-h-screen bg-[#eef1e7]">
             <section class="relative min-h-[84vh] overflow-hidden bg-[#111611] text-white">
-                <img src="{{ asset('images/road-report-hero.png') }}" alt="Warga mendokumentasikan jalan rusak" class="absolute inset-0 h-full w-full object-cover">
-                <div class="absolute inset-0 bg-[linear-gradient(90deg,rgba(15,18,14,0.96)_0%,rgba(15,18,14,0.78)_42%,rgba(15,18,14,0.28)_100%)]"></div>
-                <div class="absolute inset-x-0 top-0 z-10 border-b border-white/10 bg-[#111611]/45 backdrop-blur">
+                <img src="{{ asset('images/road-report-hero.png') }}" alt="Warga mendokumentasikan jalan rusak" class="pointer-events-none absolute inset-0 h-full w-full object-cover">
+                <div class="pointer-events-none absolute inset-0 bg-[linear-gradient(90deg,rgba(15,18,14,0.96)_0%,rgba(15,18,14,0.78)_42%,rgba(15,18,14,0.28)_100%)]"></div>
+                <div class="absolute inset-x-0 top-0 z-30 border-b border-white/10 bg-[#111611]/45 backdrop-blur">
                     <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4 lg:px-8">
                         <a href="{{ url('/') }}" class="flex items-center gap-3">
                             <span class="flex h-10 w-10 items-center justify-center rounded-md bg-[#f2b84b] text-[#171c15]">
@@ -40,7 +40,7 @@
                     </div>
                 </div>
 
-                <div class="relative z-10 mx-auto flex min-h-[84vh] max-w-7xl items-center px-6 pb-16 pt-28 lg:px-8">
+                <div class="relative z-20 mx-auto flex min-h-[84vh] max-w-7xl items-center px-6 pb-16 pt-28 lg:px-8">
                     <div class="max-w-2xl">
                         <p class="mb-4 inline-flex rounded-md border border-[#f2b84b]/40 bg-[#f2b84b]/10 px-3 py-1 text-sm font-semibold text-[#ffd36d]">Smart Mobility Sulawesi Tengah</p>
                         <h1 class="text-4xl font-extrabold leading-tight tracking-normal sm:text-5xl lg:text-6xl">Sulteng Lapor Jalan</h1>

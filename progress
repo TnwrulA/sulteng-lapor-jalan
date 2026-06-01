@@ -1401,3 +1401,45 @@ Project sudah berhasil di-commit dan di-push ke GitHub remote `origin`. Commit u
 Catatan lanjutan:
 
 Karena catatan final Tahap 8 ditulis setelah push berhasil, perlu commit dan push tambahan khusus untuk menyimpan catatan final ini ke GitHub.
+
+---
+
+## 34. Perbaikan Setelah Review Manual
+
+Tanggal update: 2026-06-02
+
+Masalah yang dilaporkan:
+
+1. Link `Masuk` dan `Daftar` di kanan atas landing page tidak bisa ditekan.
+2. Tidak ada pilihan role saat register/login.
+3. Laporan langsung berstatus `Diterima` setelah dikirim user.
+4. Tombol `Buka Lokasi` di detail laporan bisa membuka halaman 404 jika link Maps tidak lengkap.
+
+Perbaikan yang dilakukan:
+
+1. Layer hero landing page diperbaiki dengan `pointer-events-none` pada gambar/overlay dan z-index navbar dinaikkan agar link `Masuk` dan `Daftar` bisa diklik.
+2. Alur role diperjelas: register hanya untuk masyarakat, sedangkan admin dibuat melalui seeder agar tidak bisa dipilih bebas oleh user biasa.
+3. Halaman login ditambahkan informasi akun admin demo: `admin@gmail.com` / `admin123`.
+4. Status awal laporan diubah dari `Diterima` menjadi `Menunggu Verifikasi`.
+5. Status `Menunggu Verifikasi` ditambahkan ke daftar status laporan dan badge status.
+6. Dashboard user dan admin ditambahkan statistik `Menunggu`.
+7. Input link Maps sekarang dinormalisasi:
+   - link lengkap `https://...` tetap dipakai,
+   - link tanpa `https://` akan otomatis ditambah,
+   - koordinat seperti `-0.899,119.870` akan diubah menjadi link Google Maps,
+   - teks lokasi biasa akan diubah menjadi pencarian Google Maps.
+8. Tombol `Buka Lokasi` user dan admin ditambahkan `rel="noopener noreferrer"`.
+9. Form laporan ditambahkan keterangan bahwa input lokasi bisa berupa link Google Maps, link tanpa https, koordinat, atau nama lokasi.
+10. Test laporan user dan end-to-end diperbarui mengikuti status awal `Menunggu Verifikasi`.
+11. Test baru ditambahkan untuk memastikan koordinat Maps dinormalisasi menjadi link Google Maps.
+
+Verifikasi:
+
+- `php artisan test` berhasil dengan hasil 41 test passed dan 110 assertions.
+- `npm run build` berhasil.
+- Landing page `http://127.0.0.1:8001` memberi respons HTTP 200.
+- Halaman login `http://127.0.0.1:8001/login` memberi respons HTTP 200.
+
+Catatan:
+
+Tidak ada pilihan role saat register karena itu disengaja untuk keamanan alur prototype. Admin dibuat melalui seeder dengan akun `admin@gmail.com` dan password `admin123`.
